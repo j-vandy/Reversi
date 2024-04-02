@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameOverScreen : Screen
 {
+    [SerializeField] private AudioSource onPressedAudio;
     [SerializeField] private Board board;
     [SerializeField] private GameObject white;
     [SerializeField] private GameObject black;
@@ -14,6 +15,8 @@ public class GameOverScreen : Screen
 
     private void Start()
     {
+        if (onPressedAudio == null)
+            throw new NullReferenceException();
         if (board == null)
             throw new NullReferenceException();
         if (white == null)
@@ -48,12 +51,14 @@ public class GameOverScreen : Screen
 
     public void OnPlayAgainPressed()
     {
+        onPressedAudio.Play();
         board.ResetGame();
         Disable();
     }
 
     public void OnExitPressed()
     {
+        onPressedAudio.Play();
         SceneManager.LoadScene(0);
     }
 }

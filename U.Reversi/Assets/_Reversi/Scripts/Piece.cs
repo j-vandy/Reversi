@@ -9,8 +9,8 @@ public class Piece : MonoBehaviour
     public const float MAX_PLACE_HEIGHT = 12f;
     private const float MAX_FLIP_HEIGHT = 1.6f;
     public const float FLIP_DURATION = 0.75f;
-    public const float PLACE_DURATION = 0.75f;
-    public const float REMOVE_DURATION = 0.75f;
+    public const float PLACE_DURATION = 0.5f;
+    public const float REMOVE_DURATION = 0.5f;
     private bool bIsPlacing = false;
     private bool bIsFlipping = false;
     private bool bIsRemoving = false;

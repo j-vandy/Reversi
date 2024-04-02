@@ -4,11 +4,14 @@ using UnityEngine.SceneManagement;
 
 public class PlayScreen : Screen
 {
+    [SerializeField] private AudioSource onPressedAudio;
     [SerializeField] private Screen mainScreen;
     [SerializeField] private Screen playAIScreen;
 
     private void Start()
     {
+        if (onPressedAudio == null)
+            throw new NullReferenceException();
         if (mainScreen == null)
             throw new NullReferenceException();
         if (playAIScreen == null)
@@ -17,16 +20,19 @@ public class PlayScreen : Screen
 
     public void OnPlayAIPressed()
     {
+        onPressedAudio.Play();
         ScreenTransition(playAIScreen);
     }
 
     public void OnLocalPlayPressed()
     {
+        onPressedAudio.Play();
         SceneManager.LoadScene(1);
     }
 
     public void OnBackPressed()
     {
+        onPressedAudio.Play();
         ScreenTransition(mainScreen);
     }
 }

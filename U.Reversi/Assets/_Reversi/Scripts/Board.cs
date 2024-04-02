@@ -31,6 +31,9 @@ public class Board : MonoBehaviour
     public Action OnEndOfTurn;
     public Action OnGameOver;
     public BoardState state;
+    public AudioSource placeAudio;
+    public AudioSource flipAudio;
+
 
     private void Start()
     {
@@ -41,6 +44,10 @@ public class Board : MonoBehaviour
         if (blackScore == null)
             throw new NullReferenceException();
         if (passScreen == null)
+            throw new NullReferenceException();
+        if (placeAudio == null)
+            throw new NullReferenceException();
+        if (flipAudio == null)
             throw new NullReferenceException();
 
         // init board state
@@ -129,6 +136,7 @@ public class Board : MonoBehaviour
                 foreach (int[] pos in s.flipLocations)
                 {
                     bFlipped = true;
+
                     if (pieces[pos[0], pos[1]].bIsWhite)
                         state.board[pos[0], pos[1]] = BLACK;
                     else
@@ -141,7 +149,10 @@ public class Board : MonoBehaviour
         UpdateScore();
 
         if (bFlipped)
+        {
+            flipAudio.Play();
             yield return new WaitForSeconds(Piece.FLIP_DURATION);
+        }
 
         // find all possible moves
         moves = Moves(state);
@@ -214,8 +225,16 @@ public class Board : MonoBehaviour
         state.board[x,y] = state.bIsWhite ? WHITE : BLACK;
         state.bIsWhite = !state.bIsWhite;
 
+        StartCoroutine(PlayAudioAfterDelay(Piece.PLACE_DURATION - 0.1f, placeAudio));
+
         // flip all necessary tokens
         StartCoroutine(FlipPieces(x, y));
+    }
+
+    private IEnumerator PlayAudioAfterDelay(float delay, AudioSource source)
+    {
+        yield return new WaitForSeconds(delay);
+        source.Play();
     }
 
     private static bool InBounds(int x, int y)
